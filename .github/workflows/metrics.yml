@@ -1,0 +1,30 @@
+name: Update Metrics
+
+on:
+  schedule:
+    - cron: '37 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-stats
+  cancel-in-progress: false
+
+jobs:
+  metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate isometric contribution calendar
+        uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # latest
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          user: K0mork
+          filename: profile/metrics.svg
+          base: ''
+          config_timezone: Asia/Tokyo
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
+          plugins_errors_fatal: yes
+          committer_message: 'chore: update contribution metrics'
